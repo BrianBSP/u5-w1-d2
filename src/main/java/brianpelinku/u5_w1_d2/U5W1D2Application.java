@@ -11,13 +11,6 @@ public class U5W1D2Application {
 	public static void main(String[] args) {
 		SpringApplication.run(U5W1D2Application.class, args);
 
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(U5W1D2Application.class);
-
-		Menu menu = context.getBean(Menu.class);
-
-		menu.printMenu();
-
-		context.close();
 	}
 
 }

@@ -1,16 +1,18 @@
 package brianpelinku.u5_w1_d2.configurations;
 
-import brianpelinku.u5_w1_d2.entities.Bevande;
-import brianpelinku.u5_w1_d2.entities.Menu;
-import brianpelinku.u5_w1_d2.entities.Pizza;
-import brianpelinku.u5_w1_d2.entities.Topping;
+import brianpelinku.u5_w1_d2.entities.*;
+import brianpelinku.u5_w1_d2.enums.StatoTavolo;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.PropertySource;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
+@PropertySource("application.properties")
 public class PizzaConfig {
 
     // toppings
@@ -46,7 +48,7 @@ public class PizzaConfig {
     }
 
     // pizze
-    @Bean
+    @Bean(name = "pizza_margherita")
     public Pizza pizzaMargherita() {
         List<Topping> toppingList = new ArrayList<>();
         toppingList.add(mozzarella());
@@ -54,7 +56,7 @@ public class PizzaConfig {
         return new Pizza("Pizza Margherita", toppingList);
     }
 
-    @Bean
+    @Bean(name = "pizza_prosciutto")
     public Pizza pizzaProsciutto() {
         List<Topping> toppingList = new ArrayList<>();
         toppingList.add(mozzarella());
@@ -63,7 +65,7 @@ public class PizzaConfig {
         return new Pizza("Pizza col prosciutto crudo", toppingList);
     }
 
-    @Bean
+    @Bean(name = "pizza_piccantina")
     public Pizza pizzaPiccantina() {
         List<Topping> toppingList = new ArrayList<>();
         toppingList.add(mozzarella());
@@ -72,7 +74,7 @@ public class PizzaConfig {
         return new Pizza("Pizza Piccantina", toppingList);
     }
 
-    @Bean
+    @Bean(name = "pizza_diavolina")
     public Pizza pizzaDiavolina() {
         List<Topping> toppingList = new ArrayList<>();
         toppingList.add(mozzarella());
@@ -82,7 +84,7 @@ public class PizzaConfig {
         return new Pizza("Pizza Diavolina", toppingList);
     }
 
-    @Bean
+    @Bean(name = "pizza_bufalotta")
     public Pizza pizzaBufalotta() {
         List<Topping> toppingList = new ArrayList<>();
         toppingList.add(mozzarellaBufala());
@@ -92,27 +94,27 @@ public class PizzaConfig {
     }
 
     // bevande
-    @Bean
+    @Bean(name = "acqua_naturale")
     public Bevande acquaNat() {
         return new Bevande("Acqua naturale", 0, 2);
     }
 
-    @Bean
+    @Bean(name = "acqua_frizzante")
     public Bevande acquaNFriz() {
         return new Bevande("Acqua frizzante", 0, 2);
     }
 
-    @Bean
+    @Bean(name = "coca_cola")
     public Bevande cocaCola() {
         return new Bevande("Cocacola", 0, 4);
     }
 
-    @Bean
+    @Bean(name = "birra")
     public Bevande birra() {
         return new Bevande("Birra", 0, 4.5);
     }
 
-    @Bean
+    @Bean(name = "vino")
     public Bevande vino() {
         return new Bevande("vino", 0, 5);
     }
@@ -144,5 +146,43 @@ public class PizzaConfig {
 
         return new Menu(pizze, toppings, bevande);
     }
+
+    @Bean(name = "tavolo1")
+    @Primary
+    Tavolo getTavolo1(@Value("${prezzo.coperto}") double prezzoCoperto){
+        return new Tavolo(1,10, StatoTavolo.LIBERO,prezzoCoperto);
+    }
+
+    @Bean(name = "tavolo2")
+    Tavolo getTavolo2(@Value("${prezzo.coperto}") double prezzoCoperto){
+        return new Tavolo(2, 6, StatoTavolo.LIBERO, prezzoCoperto);
+    }
+
+    /*@Bean
+    private double getCostoCoperto(@Value("${prezzo.coperto}")double costoCoperto, int numCoperti){
+        double tot;
+        tot = costoCoperto * numCoperti;
+        return tot;
+    }*/
+
+
+    /*@Bean
+    private Ordine ordineTavolo1(){
+        List<Pizza> pizzeOrdinate = new ArrayList<>();
+        List<Bevande> bevandeOrdinate = new ArrayList<>();
+
+        pizzeOrdinate.add(pizzaMargherita());
+        pizzeOrdinate.add(pizzaProsciutto());
+        pizzeOrdinate.add(pizzaPiccantina());
+
+        bevandeOrdinate.add(birra());
+        bevandeOrdinate.add(birra());
+        bevandeOrdinate.add(acquaNFriz());
+
+        //double totCoperto = getCostoCoperto(Double.parseDouble("prezzo.coperto"), 3);
+
+        return new Ordine(pizzeOrdinate,bevandeOrdinate, 3);
+
+    }*/
 
 }
